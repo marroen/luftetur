@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:location/location.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'map.dart';
 import 'home.dart';
 
@@ -15,28 +16,30 @@ class MyApp extends StatelessWidget {
     "pk.eyJ1IjoibWEyMm9tIiwiYSI6ImNreG1pOXd6aTFlaHAycnFrMGQzamtlb3oifQ.Hi-KmeVm6xVR4kBWAHDhDA"
   );
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Luftetur',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            /*Container(
-                child: Center(
-                    child: Text(
-                        "Luftetur",
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                          color: Colors.black)))),*/
-            Home()
-          ])
+    return ScreenUtilInit(
+        designSize: Size(325, 667),
+        builder: () => MaterialApp(
+          title: 'Luftetur',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /*Container(
+                    child: Center(
+                        child: Text(
+                            "Luftetur",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 32,
+                              color: Colors.black)))),*/
+                Home()
+              ])
+            )
     );
   }
 }

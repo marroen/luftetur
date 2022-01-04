@@ -5,6 +5,13 @@ import 'package:location/location.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+class MapRoute extends StatelessWidget {
+  @override
+  Widget build (BuildContext context) {
+    return Map();
+  }
+}
+
 // Should be a map with directions in text format.
 class Map extends StatefulWidget {
   State <StatefulWidget> createState () {
@@ -40,6 +47,7 @@ class PathState extends State<Path> {
   @override
   Widget build(BuildContext context) {
     return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
               width: 400,
@@ -52,7 +60,9 @@ class PathState extends State<Path> {
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
-                      color: Colors.black))) ),
+                      decoration: TextDecoration.none,
+                      backgroundColor: Colors.black,
+                      color: Colors.white))) ),
           Container(
               width: 400,
               height: 600,
