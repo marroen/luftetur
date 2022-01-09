@@ -1,3 +1,3 @@
-# luftetur
+# Luftetur
 
 Hiking trails app.
