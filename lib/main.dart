@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'home.dart';
+import 'home.dart'; 
 
 void main() {
   runApp(const MyApp());

@@ -39,7 +39,7 @@ class HikeState extends State<Hike> {
                       decoration: TextDecoration.none,
                       backgroundColor: Colors.black,
                       color: Colors.white))) ),
-          Map(link: toLink(widget.points.first, widget.points.last)),
+          Map(link: createLink(widget.points.first, widget.points.last)),
           //Map(link: widget.link),
         ]
     );

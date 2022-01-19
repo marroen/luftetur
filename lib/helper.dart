@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
-String toLink(LatLng posX, LatLng posY) {
+String createLink(LatLng posX, LatLng posY) {
   double xLat = posX.latitude;
   double xLon = posX.longitude;
   double yLat = posY.latitude;
