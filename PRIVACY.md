@@ -1,6 +1,6 @@
 Welcome to the Luftetur app!
 
-This is an app created by Martin Rønning with help from Raven Deadman. The source code is
+This is an app created by Martin Rønning with inspiration from Raven Deadman. The source code is
 available on GitHub, as well as being available for download on the iOS App Store & Google Play
 Store.
 
