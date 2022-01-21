@@ -44,26 +44,21 @@ class CreatorState extends State<Creator> {
 
   void updateRoute(points) {
     setState(() {
+
       markerX = Marker(
         point: points.first, 
         builder: (ctx) => Container(child: FlutterLogo()),
         width: 80,
         height: 80,
       );
+
       markerY = Marker(
         point: points.last,
         builder: (ctx) => Container(child: FlutterLogo()),
         width: 80,
         height: 80,
       );
-      double xLat = markerX.point.latitude;
-      double xLon = markerX.point.longitude;
-      double yLat = markerY.point.latitude;
-      double yLon = markerY.point.longitude;
-      double midLat = yLat + (xLat - yLat); // = 63 ~~~~~~ (xLat' - yLat') = -63
-                                            // yLat + diff1/2 = 38
-                                            // yLat' + diff2/2 = -38
-      double midLon = yLon + (xLon - yLon);
+
       button = TextButton(
         onPressed: () { 
           Navigator.pop(
