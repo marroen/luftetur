@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+
 import 'hike.dart';
+import 'advert.dart';
 import 'helper.dart';
 import 'home.dart';
 
@@ -14,13 +16,14 @@ class Creator extends StatefulWidget {
 
 class CreatorState extends State<Creator> {
   var point;
-  List<LatLng> points = [];
+  Triangle points = Triangle([]);
+  bool ready = false;
   //bool ready = false;
 
   // Init start location
   Marker markerX = Marker(
       point: LatLng(52.348647, 4.886204),
-      builder: (ctx) => Container(child: FlutterLogo()),
+      builder: (ctx) => Container(child: Visibility(child: FlutterLogo(), visible: false)),
       width: 80,
       height: 80,
   );
@@ -28,7 +31,14 @@ class CreatorState extends State<Creator> {
   // Init end location
   Marker markerY = Marker(
       point: LatLng(52.348647, 4.886204),
-      builder: (ctx) => Container(child: FlutterLogo()),
+      builder: (ctx) => Container(child: Visibility(child: FlutterLogo(), visible: false)),
+      width: 80,
+      height: 80,
+  );
+
+  Marker markerZ = Marker(
+      point: LatLng(52.348647, 4.886204),
+      builder: (ctx) => Container(child: Visibility(child: FlutterLogo(), visible: false)),
       width: 80,
       height: 80,
   );
@@ -46,15 +56,22 @@ class CreatorState extends State<Creator> {
     setState(() {
 
       markerX = Marker(
-        point: points.first, 
-        builder: (ctx) => Container(child: FlutterLogo()),
+        point: points.first(), 
+        builder: (ctx) => Container(child: Icon(Icons.flag)),
         width: 80,
         height: 80,
       );
 
       markerY = Marker(
-        point: points.last,
-        builder: (ctx) => Container(child: FlutterLogo()),
+        point: points.second(),
+        builder: (ctx) => Container(child: Icon(Icons.flag)),
+        width: 80,
+        height: 80,
+      );
+
+      markerZ = Marker(
+        point: points.third(),
+        builder: (ctx) => Container(child: Icon(Icons.flag)),
         width: 80,
         height: 80,
       );
@@ -65,7 +82,7 @@ class CreatorState extends State<Creator> {
             context,
             Advert(
               description: "description", image: "images/skaubanen.jpg",
-              points: [markerX.point, markerY.point], directions: "directions"
+              points: points, directions: "directions"
             )
           );
         },
@@ -76,7 +93,7 @@ class CreatorState extends State<Creator> {
         )
       );
 
-      this.points = [];
+      //this.points.flush();
       //this.ready = true;
     });
   }
@@ -119,16 +136,19 @@ class CreatorState extends State<Creator> {
                         },
                         onLongPress: (_, point) {
                           print("$point");
-                          point = point;
                           print(point);
                           points.add(point);
                           print(points);
-                          if (points.length == 2) {
-                            updateRoute(points);
-                          } else if (points.length > 2) {
-                            points = [];
-                          }
 
+                          if (ready) {
+                            points.flush();
+                            points.add(point);
+                            ready = false;
+                          }
+                          else if (points.isFull()) {
+                            updateRoute(points);
+                            ready = true;
+                          }
                         },
                         onPositionChanged: (x, _) {
                           //print("$x");
@@ -143,6 +163,7 @@ class CreatorState extends State<Creator> {
                           markers: [
                             markerX,
                             markerY,
+                            markerZ,
                           ],
                       ),
                     ],

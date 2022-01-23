@@ -10,9 +10,8 @@ import 'helper.dart';
 
 // Should be a map with directions in text format.
 class Hike extends StatefulWidget {
-  final points;
+  final Triangle points;
   final directions;
-  final link = "https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=60.2770%2C11.1691%3B60.2707%2C11.1565#map=15/60.2738/11.1633";
   Hike({Key? key, required this.points, required this.directions}) : super(key: key);
   State <StatefulWidget> createState () {
     return HikeState();
@@ -20,9 +19,28 @@ class Hike extends StatefulWidget {
 }
 
 class HikeState extends State<Hike> {
+  var link = "";
+
+  HikeState() {
+    //link = createLink(widget.points.first(), widget.points.second());
+    //link = createLink(widget.points.first(), widget.points.second());
+  }
+
+  void initState() {
+    link = createLink(widget.points.first(), widget.points.second());
+  }
+
+
+  updateLink() {
+    setState(() {
+      link = createLink(widget.points.second(), widget.points.third());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+        body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox( // SizedBox?
@@ -39,9 +57,16 @@ class HikeState extends State<Hike> {
                       decoration: TextDecoration.none,
                       backgroundColor: Colors.black,
                       color: Colors.white))) ),
-          Map(link: createLink(widget.points.first, widget.points.last)),
+          link != "" ? Map(link: link) : CircularProgressIndicator(),
+          Container(
+            child: TextButton(
+              onPressed: () { updateLink(); },
+              child: Text("Reached midway point!"),
+            )
+          ),
           //Map(link: widget.link),
         ]
+      )
     );
   }
 }
@@ -66,54 +91,12 @@ class MapState extends State<Map> {
   Widget build(BuildContext context) {
     return SizedBox(
             width: 400,
-            height: 600,
+            height: 400,
             child: WebView(
                 initialUrl: widget.link,
                 javascriptMode: JavascriptMode.unrestricted,
-                backgroundColor: Colors.black),
-            /*child: FlutterMap(
-              options: MapOptions(
-                  center: LatLng(60.27674093393177, 11.168688836436456),
-                  zoom: 13.0,
-              ),
-              layers: [
-                TileLayerOptions(
-                    urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    subdomains: ['a', 'b', 'c'],
-                    //attributionBuilder: (_) {
-                      //return Text("© OpenStreetMap contributors");
-                    //},
-                ),
-                PolylineLayerOptions(
-                    polylines: [
-                      Polyline(
-                          points: widget.points,
-                          strokeWidth: 4.0,
-                          color: Colors.red)]),
-                MarkerLayerOptions(
-                    markers: [
-                      Marker(
-                          width: 20.0,
-                          height: 20.0,
-                          point: LatLng(60.27674093393177, 11.168688836436456),
-                          builder: (ctx) =>
-                          Container(
-                              child: Icon(Icons.accessibility)
-                          ),
-                      ),
-                      Marker(
-                          width: 20.0,
-                          height: 20.0,
-                          point: LatLng(60.26701310142105, 11.167889619277316),
-                          builder: (ctx) =>
-                          Container(
-                              child: Icon(Icons.flag) 
-                          ),
-                      ),
-                    ],
-                ),
-              ],
-            ),*/
+                backgroundColor: Colors.black
+            ),
     );
   }
 }
