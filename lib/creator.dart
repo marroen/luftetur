@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'hike.dart';
 import 'advert.dart';
 import 'helper.dart';
+import 'describer.dart';
 import 'home.dart';
 
 class Creator extends StatefulWidget {
@@ -18,7 +19,7 @@ class CreatorState extends State<Creator> {
   var point;
   Triangle points = Triangle([]);
   bool ready = false;
-  //bool ready = false;
+  late Description desc;
 
   // Init start location
   Marker markerX = Marker(
@@ -28,7 +29,7 @@ class CreatorState extends State<Creator> {
       height: 80,
   );
 
-  // Init end location
+  // Init second location
   Marker markerY = Marker(
       point: LatLng(52.348647, 4.886204),
       builder: (ctx) => Container(child: Visibility(child: FlutterLogo(), visible: false)),
@@ -36,6 +37,7 @@ class CreatorState extends State<Creator> {
       height: 80,
   );
 
+  // Init end location
   Marker markerZ = Marker(
       point: LatLng(52.348647, 4.886204),
       builder: (ctx) => Container(child: Visibility(child: FlutterLogo(), visible: false)),
@@ -43,6 +45,7 @@ class CreatorState extends State<Creator> {
       height: 80,
   );
 
+  // Init button
   TextButton button = TextButton(
       onPressed: () {},
       child: Text("Create hike!"),
@@ -78,13 +81,8 @@ class CreatorState extends State<Creator> {
 
       button = TextButton(
         onPressed: () { 
-          Navigator.pop(
-            context,
-            Advert(
-              description: "description", image: "images/skaubanen.jpg",
-              points: points, directions: "directions"
-            )
-          );
+          getDescription();
+
         },
         child: Text("Create hike!"),
         style: ButtonStyle(
@@ -92,10 +90,23 @@ class CreatorState extends State<Creator> {
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         )
       );
-
-      //this.points.flush();
-      //this.ready = true;
     });
+  }
+
+  Future<void> getDescription() async {
+    desc = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Describer()
+      )
+    );
+    Navigator.pop(
+      context,
+      Advert(
+        description: desc.description, image: "images/skaubanen.jpg",
+        directions: desc.directions, points: points
+      )
+    );
   }
 
   @override
@@ -117,7 +128,6 @@ class CreatorState extends State<Creator> {
                       decoration: TextDecoration.none,
                       backgroundColor: Colors.black,
                       color: Colors.white)))),
-          //Map(link: "https://www.openstreetmap.org/"),
           SizedBox(
               width: 400,
               height: 60,
@@ -151,7 +161,6 @@ class CreatorState extends State<Creator> {
                           }
                         },
                         onPositionChanged: (x, _) {
-                          //print("$x");
                         }
                     ),
                     layers: [

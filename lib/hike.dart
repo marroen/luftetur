@@ -19,22 +19,14 @@ class Hike extends StatefulWidget {
 }
 
 class HikeState extends State<Hike> {
-  var link = "";
-
-  HikeState() {
-    //link = createLink(widget.points.first(), widget.points.second());
-    //link = createLink(widget.points.first(), widget.points.second());
-  }
+  var linkA;
+  var linkB;
+  var linkC;
 
   void initState() {
-    link = createLink(widget.points.first(), widget.points.second());
-  }
-
-
-  updateLink() {
-    setState(() {
-      link = createLink(widget.points.second(), widget.points.third());
-    });
+    linkA = createLink(widget.points.first(), widget.points.second());
+    linkB = createLink(widget.points.second(), widget.points.third());
+    linkC = createLink(widget.points.third(), widget.points.first());
   }
 
   @override
@@ -43,7 +35,7 @@ class HikeState extends State<Hike> {
         body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox( // SizedBox?
+          SizedBox(
               width: 400,
               height: 60,
               child: Center(
@@ -57,46 +49,75 @@ class HikeState extends State<Hike> {
                       decoration: TextDecoration.none,
                       backgroundColor: Colors.black,
                       color: Colors.white))) ),
-          link != "" ? Map(link: link) : CircularProgressIndicator(),
-          Container(
-            child: TextButton(
-              onPressed: () { updateLink(); },
-              child: Text("Reached midway point!"),
-            )
-          ),
-          //Map(link: widget.link),
+          Map(linkA: linkA, linkB: linkB, linkC: linkC)
         ]
       )
     );
   }
 }
 class Map extends StatefulWidget {
-  final String link;
-  Map({Key? key, required this.link}) : super(key: key);
+  final String linkA;
+  final String linkB;
+  final String linkC;
+  Map({Key? key, required this.linkA, required this.linkB, required this.linkC}) : 
+      super(key: key);
   State <StatefulWidget> createState () {
     return MapState();
   }
 }
 
 class MapState extends State<Map> {
-  /* Virtual display
+  late WebViewController controller;
+  var view;
+  var text;
+  var turn;
+
   void initState() {
-    super.initState();
-    // Enable virtual display
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+
+    view = WebView(
+      initialUrl: widget.linkA,
+      onWebViewCreated: (ctrl) {
+        controller = ctrl;
+      },
+
+      javascriptMode: JavascriptMode.unrestricted,
+      backgroundColor: Colors.black
+    );
+
+    text = "Reached midway point!";
+    turn = 0;
   }
-  */
+
+  updateView() {
+    setState(() {
+      turn++;
+      switch(turn) {
+        case 1: { controller.loadUrl(widget.linkB); text = "Return to startpoint!"; }
+        break;
+        case 2: { controller.loadUrl(widget.linkC); text = "Good hike!"; }
+        break;
+        case 3: { Navigator.pop(context); }
+        break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-            width: 400,
-            height: 400,
-            child: WebView(
-                initialUrl: widget.link,
-                javascriptMode: JavascriptMode.unrestricted,
-                backgroundColor: Colors.black
-            ),
-    );
+    return Column(
+            children: [
+              SizedBox(
+                width: 400,
+                height: 400,
+                child: view
+              ),
+              Container(
+                child: TextButton(
+                  onPressed: () { updateView(); },
+                  child: Text(text),
+                ),
+              )
+            ]
+          );
   }
 }

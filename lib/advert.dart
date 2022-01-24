@@ -56,7 +56,6 @@ class AdvertState extends State<Advert> {
               child: Container(
                 height: 200,
                 child: QrImage(
-                  //data: "https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=60.2770%2C11.1691%3B60.2707%2C11.1565#map=15/60.2738/11.1633",
                   data: createLink(widget.points.first(), widget.points.third()),
                   version: QrVersions.auto,
                   backgroundColor: Colors.white)) ),

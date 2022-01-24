@@ -19,10 +19,6 @@ class Triangle {
     this.list = list;
   }
 
-  /*TriangleFromList(List<LatLng> list) {
-    this.list = list;
-  }*/
-
   bool add(LatLng point) {
     if (isFull()) {
       return false;

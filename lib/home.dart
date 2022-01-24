@@ -49,12 +49,7 @@ class HomeState extends State<Home> {
           TextButton(
               child: const Text("Add a new hiking path"),
               onPressed: () {
-                // go to hike creator
-                /*Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Creator())
-                );
-                */
+                // Go to hike creator
                 getNewAdvert();
               },
           ),
@@ -70,7 +65,9 @@ class HomeState extends State<Home> {
         )
     );
     setState(() {
-      list.add(advert);
+      if (list.length < 3) {
+        list.add(advert);
+      }
     });
   }
 }
